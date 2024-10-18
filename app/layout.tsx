@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Store from '@/providers/store'
 import Firebase from "@/providers/firebase";
+import Session from "@/providers/nexAuth";
 import "./globals.css";
 
 
@@ -16,7 +17,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <Firebase>
           <Store>
-            {children}
+            <Session>
+              {children}
+            </Session>
           </Store>
         </Firebase>
       </body>

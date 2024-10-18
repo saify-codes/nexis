@@ -2,14 +2,15 @@
 
 import Init from '@/lib/firebase'
 import { DB } from '@/lib/firebase/db'
+import { signOut } from 'next-auth/react'
 import React from 'react'
 
 export default function () {
 
 
   function foo(){
-    DB.addData('users',{name: "foo"})
+    signOut()
   }
 
-  return <button onClick={foo}>set user</button>
+  return <button onClick={foo}>logout</button>
 }
