@@ -1,6 +1,14 @@
-import Layout from '@/layouts/app'
+'use client'
 
-export default function Home() {
-  return <>
-  </>;
+import Init from '@/lib/firebase'
+import { DB } from '@/lib/firebase/db'
+import React from 'react'
+
+export default function () {
+
+  function foo(){
+    DB.addData('users',{name: "foo"})
+  }
+
+  return <button onClick={foo}>set user</button>
 }
