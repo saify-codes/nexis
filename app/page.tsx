@@ -6,6 +6,7 @@ import React from 'react'
 
 export default function () {
 
+
   function foo(){
     DB.addData('users',{name: "foo"})
   }

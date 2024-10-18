@@ -1,5 +1,3 @@
-import { firebaseConfig } from "./config";
-import { initializeApp, type FirebaseApp, } from "firebase/app";
 import {
     doc,
     addDoc,
@@ -19,15 +17,12 @@ import {
 
 import Base from ".";
 
-function foo(a:any, b:any){
-    console.log(a,b);
-    
-}
+export class DB extends Base {
 
-export class DB extends Base{
-
-    @foo
     static async addData(collection: string, data: Record<string, any>) {
+
+        this.verifyFirebaseInitialization()
+
         try {
             const docRef = await addDoc(firestoreCollection(this.db, 'users'), data);
             return docRef.id;
@@ -38,6 +33,9 @@ export class DB extends Base{
     }
 
     static async setData(collection: string, id: string, data: Record<string, any>) {
+
+        this.verifyFirebaseInitialization()
+
         try {
             await setDoc(doc(this.db, collection, id), data);
             return true;
@@ -49,6 +47,9 @@ export class DB extends Base{
     }
 
     static async updateData(collection: string, id: string, data: Record<string, any>) {
+
+        this.verifyFirebaseInitialization()
+
         const userRef = doc(this.db, collection, id);
         try {
             await updateDoc(userRef, data);
@@ -60,6 +61,9 @@ export class DB extends Base{
     }
 
     static async deleteData(collection: string, id: string) {
+
+        this.verifyFirebaseInitialization()
+
         await deleteDoc(doc(this.db, collection, id));
         return true
     }
@@ -71,6 +75,9 @@ export class DB extends Base{
     }
 
     static async getAllData(collection: string) {
+
+        this.verifyFirebaseInitialization()
+
         const data: any[] = []
         const querySnapshot = await getDocs(firestoreCollection(this.db, collection));
         querySnapshot.forEach((doc) => {
@@ -80,6 +87,9 @@ export class DB extends Base{
     }
 
     static async query(collection: string, field: string, operator: WhereFilterOp, value: any) {
+
+        this.verifyFirebaseInitialization()
+
         const data: any[] = []
         const q = query(firestoreCollection(this.db, collection), where(field, operator, value));
         const querySnapshot = await getDocs(q);
@@ -89,7 +99,11 @@ export class DB extends Base{
 
         return data
     }
+
     static async deleteCollection(collectionPath: string) {
+
+        this.verifyFirebaseInitialization()
+
         const collectionRef = firestoreCollection(this.db, collectionPath);
         const batchSize = 500;
         let querySnapshot: QuerySnapshot;
