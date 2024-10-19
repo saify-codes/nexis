@@ -26,6 +26,8 @@ export default function () {
         <input type="text" className="border-red-500 border"/>
         <input type="text" className="border-red-500 broder"/>
 
+        <h1 className="bg-yellow-300 font-bold text-xl">TESTING</h1>
+
         <button onClick={foo} className=" text-blue-500">login</button>
         <button onClick={foo2}>logout</button>
 
