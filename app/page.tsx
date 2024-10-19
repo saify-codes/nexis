@@ -12,5 +12,5 @@ export default function () {
     signOut()
   }
 
-  return <button onClick={foo}>logout App</button>
+  return <button onClick={foo}>logout</button>
 }
