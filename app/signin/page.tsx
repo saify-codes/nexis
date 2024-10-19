@@ -23,10 +23,10 @@ export default function () {
 
     return <>
 
-        <input type="text" className=" border-red-500"/>
+        <input type="text" className=" border-red-500 border"/>
         <input type="text" />
 
-        <button onClick={foo} className=" text-red-950">kk</button>
+        <button onClick={foo} className=" text-blue-500">kk</button>
         <button onClick={foo2}>logout</button>
 
     </>
