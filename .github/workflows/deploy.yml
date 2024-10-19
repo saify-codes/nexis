@@ -1,48 +1,37 @@
-name: CI/CD Pipeline for Next.js 14 with EC2 and PM2
+name: CI/CD Pipeline NextJS 14
 
 on:
   push:
-    branches:
-      - main  # Deploy from the main branch
+    branches: [main]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
-
-      - name: Install SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Add SSH Host to Known Hosts
-        run: |
-          ssh-keyscan -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '23.x' # Specify Node.js version for Next.js 14
-          cache: 'npm'
+          node-version: '22'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Dependencies
+        run: npm ci
 
-      - name: Build Next.js App
+      - name: Build Project
         run: npm run build
 
-      - name: Deploy to EC2 via SSH
-        run: |
-          scp -o StrictHostKeyChecking=no -P ${{ secrets.EC2_PORT }} -r ./* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.EC2_APP_PATH }}
-
-      - name: Restart Application with PM2
-        run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-          cd ${{ secrets.EC2_APP_PATH }} && 
-          npm install && 
-          npm run build && 
-          pm2 restart app || pm2 start npm --name 'nexis' -- start"
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /var/www/nexis
+            git pull origin main
+            npm ci
+            npm run build
+            pm2 restart all || pm2 start npm --name "nexis" -- start
