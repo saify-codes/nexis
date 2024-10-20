@@ -10,6 +10,8 @@ import { withLoader } from "@/utils"
 import { Auth } from "@/lib/firebase"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card"
+import { useDispatch } from "react-redux";
+import { createSession } from "@/store/auth";
 import Link from "next/link"
 
 
@@ -17,10 +19,10 @@ import Link from "next/link"
 
 export default function () {
 
+    const dispatch = useDispatch()
     const { register, handleSubmit, watch, reset, setError, clearErrors, formState } = useForm();
     const { errors } = formState as { errors: any };
     const [isFormSubmitting, setFormSubmitting] = useState<boolean>(false)
-
     const [alert, setAlert] = useState<Record<string, any>>({
         show: false,
         variant: 'default',
@@ -29,6 +31,10 @@ export default function () {
     });
 
     const onSubmit = (data: Record<string, string>) => {
+
+        dispatch(createSession('test user', 'token'))
+
+        return;
 
         const { email, password } = data
 

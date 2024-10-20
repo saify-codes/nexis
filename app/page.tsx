@@ -1,15 +1,15 @@
 'use client'
+import { useDispatch } from "react-redux";
+import { destroySession } from "@/store/auth";
 
-import Init from '@/lib/firebase'
-import { DB } from '@/lib/firebase/db'
-import { signOut } from 'next-auth/react'
+
 import React from 'react'
 
 export default function () {
 
-
-  function foo(){
-    signOut()
+  const dispatch = useDispatch()
+  const foo = () =>{
+    dispatch(destroySession())
   }
 
   return <button onClick={foo}>logout</button>

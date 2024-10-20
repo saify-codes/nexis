@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Store from '@/providers/store'
 import Firebase from "@/providers/firebase";
-import Session from "@/providers/nexAuth";
+import Session from "@/providers/AuthSession";
 import "./globals.css";
 
 
