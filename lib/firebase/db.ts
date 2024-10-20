@@ -100,11 +100,11 @@ export class DB extends Base {
         return data
     }
 
-    static async deleteCollection(collectionPath: string) {
+    static async deleteCollection(collection: string) {
 
         this.verifyFirebaseInitialization()
 
-        const collectionRef = firestoreCollection(this.db, collectionPath);
+        const collectionRef = firestoreCollection(this.db, collection);
         const batchSize = 500;
         let querySnapshot: QuerySnapshot;
 

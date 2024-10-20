@@ -9,19 +9,40 @@ import {
     signOut,
     type User
 } from "firebase/auth";
+import { DB } from "./db";
 
-export class Auth{
+
+type authResponse = {
+    error: string | null
+    user: Record<string, any> | null
+}
+
+export class Auth {
 
     static async createUser(email: string, password: string) {
+        const response: authResponse = { error: null, user: null }
         const auth = getAuth();
+
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
+            response.user = user
             console.log("User created successfully:", user);
-            return user;
+
         } catch (error: any) {
             console.error("Error creating user:", error.code, error.message);
-            throw error;
+
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    response.error = 'email already exists'
+                    break;
+                default:
+                    response.error = 'something went wrong'
+
+            }
+
+        } finally {
+            return response
         }
     }
 
@@ -35,12 +56,30 @@ export class Auth{
     }
 
     static async login(email: string, password: string, remember: boolean) {
+        const response: authResponse = { error: null, user: null }
         const auth = getAuth();
         const persistence = remember ? browserLocalPersistence : browserSessionPersistence;
         await setPersistence(auth, persistence); // Set persistence based on the remember me checkbox
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        return user;
+
+        try {
+            const credentials = await signInWithEmailAndPassword(auth, email, password);
+            response.user = await DB.getData('users', credentials.user.uid)
+            
+        } catch (error: any) {
+            switch (error.code) {
+                case 'auth/invalid-email':
+                    response.error = 'Invalid email'
+                    break;
+                case 'auth/invalid-credential':
+                    response.error = 'Invalid credentials'
+                    break;
+                case 'auth/too-many-requests':
+                    response.error = 'Too many attempts account temporary blocked'
+                    break;
+            }
+        } finally {
+            return response
+        }
     }
 
     static async logout() {
