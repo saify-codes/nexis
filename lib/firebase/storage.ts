@@ -11,11 +11,15 @@ import Base from '.';
 export class Storage extends Base {
 
     private static createStorage(folder: string, userId: string, fileName?: string): StorageReference {
+        
         const path = fileName ? `${folder}/${userId}/${fileName}` : `${folder}/${userId}`;
         return ref(this.storage, path);
     }
 
     static async uploadFile(folder: string, userId: string, file: File): Promise<UploadResult> {
+
+        this.verifyFirebaseInitialization()
+
         const storageRef = this.createStorage(folder, userId, file.name);
 
         try {
@@ -29,6 +33,9 @@ export class Storage extends Base {
     }
 
     static async listFiles(folder: string, userId: string): Promise<StorageReference[]> {
+
+        this.verifyFirebaseInitialization()
+
         const storageRef = this.createStorage(folder, userId);
 
         try {
@@ -41,6 +48,9 @@ export class Storage extends Base {
     }
 
     static async getFileURL(folder: string, userId: string, fileName: string): Promise<string> {
+
+        this.verifyFirebaseInitialization()
+
         const storageRef = this.createStorage(folder, userId, fileName);
 
         try {
@@ -53,6 +63,9 @@ export class Storage extends Base {
     }
 
     static async listFileURLs(folder: string, userId: string): Promise<{ name: string; url: string }[]> {
+
+        this.verifyFirebaseInitialization()
+
         const storageRef = this.createStorage(folder, userId);
 
         try {
