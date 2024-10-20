@@ -47,9 +47,6 @@ export default function () {
 
             }
 
-            console.log(user);
-            
-
         }, setFormSubmitting)
     }
 
