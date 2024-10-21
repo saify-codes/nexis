@@ -4,11 +4,13 @@ import { destroySession } from "@/store/auth";
 
 
 import React from 'react'
+import { Auth } from "@/lib/firebase";
 
 export default function () {
 
   const dispatch = useDispatch()
-  const foo = () =>{
+  const foo = async () =>{
+    await Auth.logout()
     dispatch(destroySession())
   }
 

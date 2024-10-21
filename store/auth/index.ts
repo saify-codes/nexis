@@ -56,5 +56,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { createSession, destroySession } = authSlice.actions;
+export const { createSession, setSession, destroySession } = authSlice.actions;
 export default authSlice.reducer;

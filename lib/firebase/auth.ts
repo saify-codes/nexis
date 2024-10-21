@@ -15,19 +15,24 @@ import { DB } from "./db";
 type authResponse = {
     error: string | null
     user: Record<string, any> | null
+    token: string | null
 }
+
+type authUser = {
+    error: string | null
+    user: Record<string, any> | null
+}
+
 
 export class Auth {
 
     static async createUser(email: string, password: string) {
-        const response: authResponse = { error: null, user: null }
+        const response: authUser = { error: null, user: null }
         const auth = getAuth();
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            response.user = user
-            console.log("User created successfully:", user);
+            response.user = userCredential.user
 
         } catch (error: any) {
             console.error("Error creating user:", error.code, error.message);
@@ -56,15 +61,17 @@ export class Auth {
     }
 
     static async login(email: string, password: string, remember: boolean) {
-        const response: authResponse = { error: null, user: null }
+        const response: authResponse = { error: null, user: null, token: null }
         const auth = getAuth();
         const persistence = remember ? browserLocalPersistence : browserSessionPersistence;
         await setPersistence(auth, persistence); // Set persistence based on the remember me checkbox
 
         try {
             const credentials = await signInWithEmailAndPassword(auth, email, password);
-            response.user = await DB.getData('users', credentials.user.uid)
-            
+            const user = await DB.getData('users', credentials.user.uid)
+            response.token = await credentials.user.getIdToken()
+            response.user = { ...user, created: user?.created.toDate().toISOString() }
+
         } catch (error: any) {
             switch (error.code) {
                 case 'auth/invalid-email':

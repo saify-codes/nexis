@@ -31,16 +31,10 @@ export default function () {
     });
 
     const onSubmit = (data: Record<string, string>) => {
-
-        dispatch(createSession('test user', 'token'))
-
-        return;
-
         const { email, password } = data
 
         withLoader(async () => {
-
-            const { error, user } = await Auth.login(email, password, false)
+            const { error, user, token } = await Auth.login(email, password, false)
 
             if (error) {
 
@@ -51,7 +45,15 @@ export default function () {
                     description: error,
                 })
 
+            } else {
+
+                dispatch(createSession({
+                    user,
+                    token,
+                    persistance: false
+                }))
             }
+
 
         }, setFormSubmitting)
     }
