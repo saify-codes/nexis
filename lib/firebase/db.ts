@@ -127,7 +127,7 @@ export class DB extends Base {
 
             return true;
         } catch (e) {
-            console.error('Error deleting collection', collectionPath, e);
+            console.error('Error deleting collection', collection, e);
             return false;
         }
     }
