@@ -29,7 +29,7 @@ export default function ({ children }: { children: React.ReactNode }) {
 
                     }
                 }
-
+                
                 dispatch(destroySession())
             })
     }, [])
