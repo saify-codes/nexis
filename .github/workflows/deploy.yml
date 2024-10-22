@@ -18,6 +18,6 @@ jobs:
           script: |
             cd /var/www/nexis
             git pull origin main
-            npm update
+            npm ci
             npm run build --trace-warnings=false
             pm2 restart all || pm2 start npm --name "nexis" -- start
