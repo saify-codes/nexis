@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Auth, DB } from '@/lib/firebase'
 import { setSession, destroySession } from '@/store/auth'
+import Loader from '@/components/loaders/cat'
 
 export default function ({ children }: { children: React.ReactNode }) {
 
@@ -46,5 +47,5 @@ export default function ({ children }: { children: React.ReactNode }) {
         }
     }, [auth])
 
-    return auth.status === 'loading'? 'Loading...' : children
+    return auth.status === 'loading'? <Loader/> : children
 }
