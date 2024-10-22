@@ -33,7 +33,7 @@ export const authSlice = createSlice({
       state.user = user;
 
       // Set cookie with token, persist or session-based
-      setCookie('auth-token', token,  persistance ? 2592000000 : null)
+      setCookie('auth-token', token, persistance ? 2592000000 : null)
     },
 
     // Handles session destruction and clears state
