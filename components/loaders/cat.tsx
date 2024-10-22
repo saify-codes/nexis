@@ -2,7 +2,7 @@ import Lottie from 'lottie-react';
 import animationData from '@/lottie/cat.json'
 import { useEffect, useState } from 'react';
 
-export default function cat() {
+export default function () {
 
     const [isVisible, setVisibility] = useState(false)
 
@@ -10,7 +10,7 @@ export default function cat() {
         setTimeout(() => {
             setVisibility(true)
         }, 200)
-    })
+    }, [])
 
     return <div className='fixed inset-0 flex items-center justify-center'>
         {isVisible && <Lottie className='w-96 h-96' animationData={animationData} loop={true} />}

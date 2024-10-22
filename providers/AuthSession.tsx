@@ -1,12 +1,16 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { RootState } from '@/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Auth, DB } from '@/lib/firebase'
 import { setSession, destroySession } from '@/store/auth'
-import Loader from '@/components/loaders/cat'
+
+const Loader = dynamic(() => import('@/components/loaders/cat'), {
+    ssr: false, // Ensures it only renders on the client-side
+});
 
 export default function ({ children }: { children: React.ReactNode }) {
 
@@ -30,7 +34,7 @@ export default function ({ children }: { children: React.ReactNode }) {
 
                     }
                 }
-                
+
                 dispatch(destroySession())
             })
     }, [])
@@ -47,5 +51,5 @@ export default function ({ children }: { children: React.ReactNode }) {
         }
     }, [auth])
 
-    return auth.status === 'loading'? <Loader/> : children
+    return auth.status === 'loading' ? <Loader /> : children
 }
