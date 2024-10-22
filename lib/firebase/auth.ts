@@ -23,7 +23,6 @@ type authUser = {
     user: Record<string, any> | null
 }
 
-
 export class Auth {
 
     static async createUser(email: string, password: string) {

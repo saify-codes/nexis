@@ -14,14 +14,13 @@ export default function ({ children }: { children: React.ReactNode }) {
     const auth = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {
+
         Auth.authenticated()
             .then(async session => {
                 if (session) {
                     const user = await DB.getData('users', session.uid)
 
                     if (user) {
-                        console.log(user);
-                        
                         return dispatch(setSession({
                             status: 'authenticated',
                             token: await session.getIdToken(),
@@ -29,10 +28,8 @@ export default function ({ children }: { children: React.ReactNode }) {
                         }))
 
                     }
-
                 }
 
-                document.cookie = "auth-token=; max-age=-1" // delete cookie
                 dispatch(destroySession())
             })
     }, [])

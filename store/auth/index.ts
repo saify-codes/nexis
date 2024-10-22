@@ -1,3 +1,4 @@
+import { deleteCookie, setCookie } from '@/utils';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
@@ -9,7 +10,7 @@ export type AuthState = {
 
 export type Session = {
   user: Record<string, any> | null;
-  token: string | null;
+  token: string;
   persistance: boolean;
 };
 
@@ -32,7 +33,7 @@ export const authSlice = createSlice({
       state.user = user;
 
       // Set cookie with token, persist or session-based
-      document.cookie = `auth-token=${token}; max-age=${persistance ? 2592000000 : ''}`;
+      setCookie('auth-token', token,  persistance ? 2592000000 : null)
     },
 
     // Handles session destruction and clears state
@@ -42,7 +43,7 @@ export const authSlice = createSlice({
       state.user = null;
 
       // Clear auth token cookie
-      document.cookie = 'auth-token=; max-age=-1';
+      deleteCookie('auth-token')
     },
 
     // Sets the session based on the provided state
