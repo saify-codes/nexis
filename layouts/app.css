@@ -6,7 +6,7 @@
     "header header"
     "sidebar main"
     "sidebar footer";
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 250px 1fr;
   grid-template-rows: 80px 1fr 50px;
 
   nav {
@@ -46,7 +46,7 @@
       left: 0;
       bottom: 0;
       translate: -100% 0;
-      width: 300px;
+      width: 250px;
       height: calc(100% - 80px);
       transition: 0.5s;
     }

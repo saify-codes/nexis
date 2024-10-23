@@ -1,4 +1,4 @@
-import Navbar from "@/components/layout/app/navbar";
+import Navbar from "@/components/layout/app/navigation";
 import Sidebar from "@/components/layout/app/sidebar";
 import Footer from "@/components/layout/app/footer";
 import { createContext, useState, ReactNode, useContext } from "react";
