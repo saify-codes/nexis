@@ -6,20 +6,26 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LucideGanttChart } from "lucide-react"
+import { LucideGanttChart, ChevronLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Auth } from "@/utils/auth"
+import { useLayout } from "@/layouts/app"
 
 export default function () {
 
+    const { isSidebarOpen, toggleSidebar } = useLayout()
     return <nav className="flex items-center justify-between px-5">
 
-        <button>
-            <LucideGanttChart className="h-6 w-6" />
+        <button className="lg:invisible" onClick={toggleSidebar}>
+            {
+                isSidebarOpen ?
+                    <ChevronLeft className="h-6 w-6" />
+                    :
+                    <LucideGanttChart className="h-6 w-6" />
+            }
         </button>
-
 
         <div className="flex items-center gap-4">
             <Input type="search" placeholder="search..." />
